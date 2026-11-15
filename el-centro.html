@@ -473,6 +473,73 @@
     <span class="whatsapp-flotante__texto">Agenda tu visita</span>
   </a>
 
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galería de fotos" hidden>
+    <button class="lightbox__cerrar" id="lightbox-cerrar" aria-label="Cerrar galería">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="28" height="28" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--anterior" id="lightbox-anterior" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="32" height="32" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="lightbox__contenido">
+      <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+    </div>
+    <button class="lightbox__nav lightbox__nav--siguiente" id="lightbox-siguiente" aria-label="Foto siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="32" height="32" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lightbox__contador" id="lightbox-contador"></div>
+  </div>
+
   <script src="js/main.js"></script>
+  <script>
+  (function () {
+    var lightbox   = document.getElementById('lightbox');
+    var img        = document.getElementById('lightbox-img');
+    var contador   = document.getElementById('lightbox-contador');
+    var btnCerrar  = document.getElementById('lightbox-cerrar');
+    var btnAnterior= document.getElementById('lightbox-anterior');
+    var btnSiguiente = document.getElementById('lightbox-siguiente');
+    var items      = Array.from(document.querySelectorAll('.galeria__item'));
+    var indice     = 0;
+
+    function mostrar(i) {
+      indice = (i + items.length) % items.length;
+      var item   = items[indice];
+      var imgEl  = item.querySelector('img');
+      img.src    = item.getAttribute('href');
+      img.alt    = imgEl ? imgEl.alt : '';
+      contador.textContent = (indice + 1) + ' / ' + items.length;
+    }
+
+    function abrir(i) {
+      mostrar(i);
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      btnCerrar.focus();
+    }
+
+    function cerrar() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+      if (items[indice]) items[indice].focus();
+    }
+
+    items.forEach(function (item, i) {
+      item.addEventListener('click', function (e) { e.preventDefault(); abrir(i); });
+    });
+
+    btnCerrar.addEventListener('click', cerrar);
+    btnAnterior.addEventListener('click', function () { mostrar(indice - 1); });
+    btnSiguiente.addEventListener('click', function () { mostrar(indice + 1); });
+    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) cerrar(); });
+
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape')     cerrar();
+      if (e.key === 'ArrowLeft')  mostrar(indice - 1);
+      if (e.key === 'ArrowRight') mostrar(indice + 1);
+    });
+  })();
+  </script>
 </body>
 </html>
