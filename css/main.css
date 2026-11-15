@@ -1,0 +1,2046 @@
+/*
+ * main.css — Estilos base de Centro KLC
+ * Fase 5 · 2026-11-14
+ *
+ * ESTRUCTURA:
+ * 1. Reset y base
+ * 2. Tipografía
+ * 3. Contenedor y grid
+ * 4. Componentes globales (header, footer, botón flotante)
+ * 5. Botones
+ * 6. Secciones comunes (hero, encabezado de página, bandas CTA)
+ * 7. Tarjetas (diferenciadores, Farmer Cards, resumen de programas)
+ * 8. Galería
+ * 9. Formulario de contacto
+ * 10. Tablas
+ * 11. Accesibilidad
+ */
+
+
+/* ==========================================================================
+   1. RESET Y BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respeta la preferencia del usuario de no animar */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-azul);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-rojo);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* Enlace "saltar al contenido" para teclado */
+.saltar-contenido {
+  position: absolute;
+  top: -100px;
+  left: var(--space-4);
+  background: var(--color-rojo);
+  color: #fff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  z-index: 999;
+  transition: top var(--transition-fast);
+}
+
+.saltar-contenido:focus {
+  top: var(--space-4);
+  color: #fff;
+}
+
+
+/* ==========================================================================
+   2. TIPOGRAFÍA
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--color-texto);
+  line-height: var(--line-height-heading);
+}
+
+h1 { font-size: var(--font-size-h1); font-weight: var(--font-weight-bold); }
+h2 { font-size: var(--font-size-h2); font-weight: var(--font-weight-bold); }
+h3 { font-size: var(--font-size-h3); font-weight: var(--font-weight-semibold); }
+h4 { font-size: var(--font-size-h4); font-weight: var(--font-weight-semibold); }
+
+p {
+  margin-bottom: var(--space-5);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+strong {
+  font-weight: var(--font-weight-semibold);
+}
+
+
+/* ==========================================================================
+   3. CONTENEDOR Y GRID
+   ========================================================================== */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--max-width-container);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .contenedor {
+    padding-inline: var(--space-12);
+  }
+}
+
+@media (min-width: 1280px) {
+  .contenedor {
+    padding-inline: var(--space-8);
+  }
+}
+
+/* Grid genérico de tarjetas */
+.grid-tarjetas {
+  display: grid;
+  gap: var(--gap-grid);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid-tarjetas--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-tarjetas--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-tarjetas--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-tarjetas--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+/* ==========================================================================
+   4. HEADER
+   ========================================================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--color-blanco);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+  border-bottom: 1px solid transparent;
+}
+
+.header.con-sombra {
+  box-shadow: var(--shadow-md);
+  border-bottom-color: var(--color-borde);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Logo */
+.header__logo {
+  display: block;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.header__logo img {
+  height: 36px;
+  width: auto;
+}
+
+/* Botón hamburguesa (solo móvil) */
+.header__hamburguesa {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.header__hamburguesa:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 2px;
+}
+
+.header__hamburguesa span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-texto);
+  border-radius: 2px;
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+  transform-origin: center;
+}
+
+/* Transformación hamburguesa → X */
+.header__hamburguesa[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.header__hamburguesa[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.header__hamburguesa[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Navegación escritorio — oculta en móvil */
+.header__nav {
+  display: none;
+}
+
+/* Botón CTA header escritorio — oculto en móvil */
+.header__cta {
+  display: none;
+}
+
+/* Overlay del menú móvil */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: var(--z-overlay);
+}
+
+.nav-overlay.activo {
+  display: block;
+}
+
+/* Drawer móvil */
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(85vw, 320px);
+  height: 100vh;
+  background-color: var(--color-blanco);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  transition: right var(--transition-slow);
+  overflow-y: auto;
+}
+
+.nav-drawer.activo {
+  right: 0;
+}
+
+.nav-drawer__cerrar {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+  color: var(--color-texto-suave);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-6);
+}
+
+.nav-drawer__cerrar:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 2px;
+}
+
+.nav-drawer__lista {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-drawer__lista li {
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.nav-drawer__lista a {
+  display: block;
+  padding: var(--space-5) var(--space-2);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-texto);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.nav-drawer__lista a:hover,
+.nav-drawer__lista a[aria-current="page"] {
+  color: var(--color-rojo);
+}
+
+.nav-drawer__cta {
+  margin-top: var(--space-8);
+}
+
+.nav-drawer__cta .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Escritorio: mostrar nav, ocultar hamburguesa */
+@media (min-width: 768px) {
+  .header {
+    height: 72px;
+  }
+
+  .header__logo img {
+    height: 48px;
+  }
+
+  .header__hamburguesa {
+    display: none;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    margin-inline: var(--space-10);
+    flex: 1;
+  }
+
+  .header__nav a {
+    font-family: var(--font-body);
+    font-size: var(--font-size-label);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-texto);
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .header__nav a:hover,
+  .header__nav a[aria-current="page"] {
+    color: var(--color-rojo);
+    border-bottom-color: var(--color-rojo);
+  }
+
+  .header__cta {
+    display: block;
+    flex-shrink: 0;
+  }
+}
+
+
+/* ==========================================================================
+   5. FOOTER
+   ========================================================================== */
+
+.footer {
+  background-color: var(--color-fondo-alt);
+  border-top: 3px solid var(--color-borde);
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-8);
+  margin-top: auto;
+}
+
+.footer__grid {
+  display: grid;
+  gap: var(--space-10);
+  margin-bottom: var(--space-10);
+}
+
+@media (min-width: 768px) {
+  .footer__grid {
+    grid-template-columns: 1.5fr 1fr 1.5fr;
+    gap: var(--space-12);
+  }
+}
+
+.footer__marca {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.footer__logo {
+  height: 56px;
+  width: auto;
+}
+
+.footer__lema {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  font-style: italic;
+  color: var(--color-rojo);
+  margin: 0;
+}
+
+.footer__col-titulo {
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-texto);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-4);
+}
+
+.footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer__nav a {
+  font-size: 0.9375rem;
+  color: var(--color-texto-suave);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer__nav a:hover {
+  color: var(--color-rojo);
+}
+
+.footer__contacto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer__dato {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 0.9375rem;
+  color: var(--color-texto-suave);
+}
+
+.footer__dato svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footer__dato a {
+  color: var(--color-texto-suave);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer__dato a:hover {
+  color: var(--color-rojo);
+}
+
+.footer__barra {
+  border-top: 1px solid var(--color-borde);
+  padding-top: var(--space-6);
+  font-size: var(--font-size-caption);
+  color: var(--color-texto-suave);
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   6. BOTÓN FLOTANTE WHATSAPP
+   ========================================================================== */
+
+.whatsapp-flotante {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: var(--z-whatsapp);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background-color: var(--color-whatsapp);
+  color: #fff;
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-whatsapp);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  /* Solo el ícono en móvil */
+  width: 56px;
+  height: 56px;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.whatsapp-flotante:hover {
+  background-color: var(--color-whatsapp-hover);
+  transform: scale(1.05);
+  color: #fff;
+}
+
+.whatsapp-flotante:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 3px;
+  color: #fff;
+}
+
+.whatsapp-flotante__icono {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.whatsapp-flotante__texto {
+  display: none;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+/* Animación pulse en móvil */
+@keyframes pulse-wa {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.whatsapp-flotante {
+  animation: pulse-wa 3s ease-in-out infinite;
+}
+
+.whatsapp-flotante:hover {
+  animation: none;
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-flotante {
+    animation: none;
+  }
+}
+
+/* Escritorio: mostrar texto en hover con expansión */
+@media (min-width: 768px) {
+  .whatsapp-flotante {
+    animation: none;
+    padding-inline: var(--space-4);
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .whatsapp-flotante:hover {
+    width: auto;
+    padding-inline: var(--space-5);
+    gap: var(--space-3);
+  }
+
+  .whatsapp-flotante:hover .whatsapp-flotante__texto {
+    display: block;
+  }
+}
+
+
+/* ==========================================================================
+   7. BOTONES
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-btn);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  padding: 14px 28px;
+  border: 2px solid transparent;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 3px;
+}
+
+/* Botón primario — rojo */
+.btn--primario {
+  background-color: var(--color-rojo);
+  color: #fff;
+  border-color: var(--color-rojo);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primario:hover {
+  background-color: var(--color-rojo-hover);
+  border-color: var(--color-rojo-hover);
+  box-shadow: var(--shadow-md);
+  color: #fff;
+}
+
+.btn--primario:active {
+  transform: scale(0.98);
+  color: #fff;
+}
+
+/* Botón secundario — contorno rojo */
+.btn--secundario {
+  background-color: transparent;
+  color: var(--color-rojo);
+  border-color: var(--color-rojo);
+}
+
+.btn--secundario:hover {
+  background-color: #FEF0F0;
+  color: var(--color-rojo);
+}
+
+/* Botón grande (hero) */
+.btn--grande {
+  padding: 20px 40px;
+  font-size: 1.125rem;
+}
+
+/* Botón pequeño (dentro de tarjetas) */
+.btn--pequeno {
+  padding: 10px 20px;
+  font-size: 0.9375rem;
+}
+
+/* Botón WhatsApp */
+.btn--whatsapp {
+  background-color: var(--color-whatsapp);
+  color: #fff;
+  border-color: var(--color-whatsapp);
+  box-shadow: var(--shadow-sm);
+  font-size: 1.125rem;
+  padding: 18px 36px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.btn--whatsapp:hover {
+  background-color: var(--color-whatsapp-hover);
+  border-color: var(--color-whatsapp-hover);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+@media (min-width: 768px) {
+  .btn--whatsapp {
+    width: auto;
+  }
+}
+
+
+/* ==========================================================================
+   8. HERO (Inicio)
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    min-height: 620px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero {
+    min-height: 700px;
+  }
+}
+
+.hero__imagen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Overlay: oscuro abajo para texto, semi-oscuro arriba para el logo */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.25) 100%);
+  pointer-events: none;
+}
+
+.hero__contenido {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-10) var(--space-16);
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.hero__titulo {
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  color: #fff;
+  margin-bottom: var(--space-5);
+}
+
+.hero__subtitulo {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: var(--space-8);
+  line-height: 1.5;
+}
+
+.hero__acciones {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.hero__sin-compromiso {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 768px) {
+  .hero__acciones {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+
+/* ==========================================================================
+   9. ENCABEZADO DE PÁGINA INTERIOR
+   ========================================================================== */
+
+.encabezado-pagina {
+  position: relative;
+  padding-block: var(--space-16);
+  overflow: hidden;
+  background-color: var(--color-azul);
+}
+
+.encabezado-pagina__imagen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.encabezado-pagina::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.encabezado-pagina__contenido {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+}
+
+.encabezado-pagina__titulo {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+  margin-bottom: var(--space-4);
+}
+
+.encabezado-pagina__subtitulo {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Encabezado simple (sin foto — para página Contacto) */
+.encabezado-pagina--simple {
+  background-color: var(--color-fondo-alt);
+}
+
+.encabezado-pagina--simple::after {
+  display: none;
+}
+
+.encabezado-pagina--simple .encabezado-pagina__titulo {
+  color: var(--color-texto);
+}
+
+.encabezado-pagina--simple .encabezado-pagina__subtitulo {
+  color: var(--color-texto-suave);
+}
+
+
+/* ==========================================================================
+   10. SECCIONES (layout y estilos base)
+   ========================================================================== */
+
+.seccion {
+  padding-block: var(--space-10);
+}
+
+@media (min-width: 768px) {
+  .seccion {
+    padding-block: var(--space-16);
+  }
+}
+
+@media (min-width: 1280px) {
+  .seccion {
+    padding-block: var(--space-20);
+  }
+}
+
+/* Sección con fondo alternado */
+.seccion--alt {
+  background-color: var(--color-fondo-alt);
+}
+
+/* Sección con fondo azul claro */
+.seccion--azul {
+  background-color: var(--color-azul-claro);
+}
+
+.seccion__encabezado {
+  margin-bottom: var(--space-10);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .seccion__encabezado {
+    margin-bottom: var(--space-12);
+  }
+}
+
+.seccion__titulo {
+  margin-bottom: var(--space-4);
+}
+
+.seccion__subtitulo {
+  font-size: var(--font-size-body);
+  color: var(--color-texto-suave);
+  max-width: 600px;
+  margin-inline: auto;
+  line-height: var(--line-height-body);
+}
+
+.seccion__enlace-pie {
+  text-align: center;
+  margin-top: var(--space-8);
+  font-weight: var(--font-weight-medium);
+}
+
+
+/* ==========================================================================
+   11. BANDA DE SEÑALES DE CONFIANZA
+   ========================================================================== */
+
+.senales-confianza {
+  background-color: var(--color-blanco);
+  border-top: 1px solid var(--color-borde);
+  border-bottom: 1px solid var(--color-borde);
+  padding-block: var(--space-8);
+}
+
+.senales-confianza__lista {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .senales-confianza__lista {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+.senal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.senal__icono {
+  color: var(--color-rojo);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.senal__texto {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-texto);
+  line-height: 1.35;
+}
+
+
+/* ==========================================================================
+   12. TARJETAS DE DIFERENCIADOR
+   ========================================================================== */
+
+.card-diferenciador {
+  background-color: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  transition: border-top-color var(--transition-fast), box-shadow var(--transition-fast);
+  border-top: 3px solid transparent;
+}
+
+.card-diferenciador:hover {
+  border-top-color: var(--color-rojo);
+  box-shadow: var(--shadow-md);
+}
+
+.card-diferenciador__icono {
+  color: var(--color-rojo);
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.card-diferenciador__titulo {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-heading);
+  color: var(--color-texto);
+}
+
+.card-diferenciador__texto {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  line-height: var(--line-height-body);
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   13. TARJETAS DE RESUMEN DE PROGRAMAS (Inicio)
+   ========================================================================== */
+
+.card-programa {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card-programa:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-programa__rango {
+  display: inline-block;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-texto-suave);
+  background-color: var(--color-fondo-alt);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.card-programa__titulo {
+  font-size: var(--font-size-h3);
+  font-family: var(--font-heading);
+  color: var(--color-texto);
+}
+
+.card-programa__texto {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  line-height: var(--line-height-body);
+  flex: 1;
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   14. FARMER CARDS (niveles detallados)
+   ========================================================================== */
+
+.farmer-card {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: grid;
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.farmer-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+@media (min-width: 768px) {
+  .farmer-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .farmer-card--invertida {
+    direction: rtl;
+  }
+
+  .farmer-card--invertida > * {
+    direction: ltr;
+  }
+}
+
+/* Contenedor de imagen */
+.farmer-card__imagen-wrap {
+  position: relative;
+  min-height: 240px;
+  background-color: var(--color-fondo-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.farmer-card__imagen-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+/* Marcador de foto pendiente */
+.farmer-card__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+}
+
+.farmer-card__placeholder svg {
+  opacity: 0.4;
+}
+
+.farmer-card__placeholder p {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Contenido textual */
+.farmer-card__contenido {
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  border-left: 4px solid var(--farmer-color, var(--color-borde));
+}
+
+@media (max-width: 767px) {
+  .farmer-card__contenido {
+    border-left: none;
+    border-top: 4px solid var(--farmer-color, var(--color-borde));
+  }
+}
+
+.farmer-card__badge {
+  display: inline-block;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-body);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background-color: var(--farmer-fondo, var(--color-fondo-alt));
+  color: var(--farmer-color, var(--color-texto-suave));
+  align-self: flex-start;
+}
+
+.farmer-card__titulo {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-texto);
+}
+
+.farmer-card__subtitulo {
+  font-size: var(--font-size-body);
+  color: var(--color-texto-suave);
+  margin-top: calc(-1 * var(--space-4));
+}
+
+.farmer-card__datos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.farmer-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.farmer-dato__etiqueta {
+  font-size: var(--font-size-caption);
+  color: var(--color-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: var(--font-weight-medium);
+}
+
+.farmer-dato__valor {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-texto);
+}
+
+.farmer-card__texto {
+  font-size: var(--font-size-body);
+  color: var(--color-texto);
+  line-height: var(--line-height-body);
+}
+
+.farmer-card__aprende-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.farmer-card__aprende-lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-small);
+  color: var(--color-texto);
+  line-height: 1.45;
+}
+
+.farmer-card__aprende-lista li::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--farmer-color, var(--color-rojo));
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.farmer-card__alerta {
+  background-color: var(--color-azul-claro);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  font-size: var(--font-size-small);
+  color: var(--color-azul);
+  line-height: 1.45;
+}
+
+/* Variables por nivel — se aplican directamente en el HTML */
+.farmer--baby   { --farmer-color: var(--color-farmer-baby);   --farmer-fondo: var(--color-farmer-baby-fondo);   }
+.farmer--red    { --farmer-color: var(--color-farmer-red);    --farmer-fondo: var(--color-farmer-red-fondo);    }
+.farmer--blue   { --farmer-color: var(--color-farmer-blue);   --farmer-fondo: var(--color-farmer-blue-fondo);   }
+.farmer--yellow { --farmer-color: var(--color-farmer-yellow); --farmer-fondo: var(--color-farmer-yellow-fondo); }
+.farmer--green  { --farmer-color: var(--color-farmer-green);  --farmer-fondo: var(--color-farmer-green-fondo);  }
+.farmer--purple { --farmer-color: var(--color-farmer-purple); --farmer-fondo: var(--color-farmer-purple-fondo); }
+
+
+/* ==========================================================================
+   15. TARJETAS FARMERS DE LA PÁGINA "POR QUÉ KLC" (versión compacta)
+   ========================================================================== */
+
+.farmer-card-mini {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--farmer-color, var(--color-borde));
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.farmer-card-mini:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.farmer-card-mini__badge {
+  display: inline-block;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background-color: var(--farmer-fondo, var(--color-fondo-alt));
+  color: var(--farmer-color, var(--color-texto-suave));
+  align-self: flex-start;
+}
+
+.farmer-card-mini__edad {
+  font-size: var(--font-size-caption);
+  color: var(--color-texto-suave);
+  margin: 0;
+}
+
+.farmer-card-mini__nombre {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-texto);
+}
+
+.farmer-card-mini__texto {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  line-height: 1.45;
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   16. GALERÍA DE FOTOS
+   ========================================================================== */
+
+.galeria {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 480px) {
+  .galeria {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .galeria {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.galeria__item {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.galeria__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.galeria__item:hover img {
+  transform: scale(1.04);
+}
+
+.galeria__item:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 2px;
+}
+
+/* Superposición en hover */
+.galeria__item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color var(--transition-normal);
+  pointer-events: none;
+}
+
+.galeria__item:hover::after {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+
+/* ==========================================================================
+   17. SELECTOR DE NIVEL (Programas)
+   ========================================================================== */
+
+.selector-nivel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-bottom: var(--space-10);
+}
+
+.selector-nivel__boton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-body);
+  text-decoration: none;
+  border: 2px solid var(--farmer-color, var(--color-borde));
+  color: var(--farmer-color, var(--color-texto-suave));
+  background-color: var(--farmer-fondo, transparent);
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.selector-nivel__boton:hover {
+  background-color: var(--farmer-color, var(--color-borde));
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.selector-nivel__boton:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 2px;
+  color: var(--farmer-color, var(--color-texto-suave));
+}
+
+
+/* ==========================================================================
+   18. TABLA DE HORARIOS Y PROGRESIÓN
+   ========================================================================== */
+
+.tabla-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-small);
+  background-color: var(--color-blanco);
+}
+
+thead {
+  background-color: var(--color-azul);
+  color: #fff;
+}
+
+thead th {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-small);
+}
+
+tbody tr:nth-child(odd) {
+  background-color: var(--color-fondo);
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--color-blanco);
+}
+
+tbody tr:hover {
+  background-color: var(--color-azul-claro);
+}
+
+tbody td {
+  padding: var(--space-4) var(--space-5);
+  color: var(--color-texto);
+  border-bottom: 1px solid var(--color-borde);
+  vertical-align: top;
+}
+
+/* Badge de nivel en tabla */
+.nivel-badge {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+
+/* ==========================================================================
+   19. FORMULARIO DE CONTACTO
+   ========================================================================== */
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+  .formulario {
+    padding: var(--space-10);
+  }
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.campo__etiqueta {
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-texto);
+}
+
+.campo__etiqueta--requerido::after {
+  content: ' *';
+  color: var(--color-rojo);
+}
+
+.campo__etiqueta--opcional {
+  color: var(--color-texto-suave);
+  font-weight: 400;
+}
+
+/* Mensaje de error de validación por campo */
+.campo__error {
+  font-size: var(--font-size-caption);
+  color: var(--color-rojo);
+  margin-top: var(--space-1);
+  min-height: 1em;
+}
+
+/* Estado visual de campo inválido */
+.campo__input[aria-invalid="true"],
+.campo__select[aria-invalid="true"],
+.campo__textarea[aria-invalid="true"] {
+  border-color: var(--color-rojo);
+  box-shadow: 0 0 0 3px rgba(190, 30, 45, 0.15);
+}
+
+.campo__input,
+.campo__select,
+.campo__textarea {
+  width: 100%;
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  appearance: none;
+}
+
+.campo__input::placeholder,
+.campo__textarea::placeholder {
+  color: var(--color-texto-suave);
+  opacity: 0.7;
+}
+
+.campo__input:focus,
+.campo__select:focus,
+.campo__textarea:focus {
+  outline: none;
+  border-color: var(--color-azul);
+  box-shadow: 0 0 0 3px rgba(26, 74, 155, 0.2);
+}
+
+.campo__textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Campo oculto para honeypot antispam */
+.campo--honeypot {
+  display: none !important;
+}
+
+/* Grid de 2 columnas en tablet */
+@media (min-width: 768px) {
+  .formulario__fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+}
+
+/* Mensaje de estado del formulario */
+.formulario__mensaje {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-small);
+  display: none;
+}
+
+.formulario__mensaje--ok {
+  background-color: var(--color-verde-claro);
+  color: var(--color-verde);
+  display: block;
+}
+
+.formulario__mensaje--error {
+  background-color: var(--color-farmer-red-fondo);
+  color: var(--color-rojo);
+  display: block;
+}
+
+
+/* ==========================================================================
+   20. BANDA CTA
+   ========================================================================== */
+
+.banda-cta {
+  background-color: var(--color-rojo);
+  padding-block: var(--space-16);
+  text-align: center;
+}
+
+.banda-cta__titulo {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+  margin-bottom: var(--space-4);
+}
+
+.banda-cta__texto {
+  font-size: var(--font-size-body);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 560px;
+  margin-inline: auto;
+  margin-bottom: var(--space-8);
+  line-height: var(--line-height-body);
+}
+
+.banda-cta .btn--primario {
+  background-color: #fff;
+  color: var(--color-rojo);
+  border-color: #fff;
+}
+
+.banda-cta .btn--primario:hover {
+  background-color: var(--color-fondo);
+  color: var(--color-rojo-hover);
+  border-color: var(--color-fondo);
+}
+
+.banda-cta__pie {
+  margin-top: var(--space-5);
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* ==========================================================================
+   21. SECCIÓN DE TESTIMONIOS
+   ========================================================================== */
+
+.testimonio-card {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  position: relative;
+}
+
+.testimonio-card::before {
+  content: '\201C';
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-6);
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--color-rojo);
+  opacity: 0.15;
+}
+
+.testimonio-card__texto {
+  font-size: var(--font-size-body);
+  color: var(--color-texto);
+  line-height: var(--line-height-body);
+  font-style: italic;
+  padding-top: var(--space-6);
+}
+
+.testimonio-card__autor {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-texto-suave);
+}
+
+
+/* ==========================================================================
+   22. SECCIÓN DUAL (texto + imagen, para /por-que-klc)
+   ========================================================================== */
+
+.seccion-dual {
+  display: grid;
+  gap: var(--space-10);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .seccion-dual {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+  }
+
+  .seccion-dual--invertida > *:first-child {
+    order: 2;
+  }
+
+  .seccion-dual--invertida > *:last-child {
+    order: 1;
+  }
+}
+
+.seccion-dual__imagen {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 4 / 3;
+}
+
+.seccion-dual__imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Marcador de foto pendiente en sección dual */
+.seccion-dual__imagen--pendiente {
+  background-color: var(--color-fondo-alt);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.seccion-dual__imagen--pendiente p {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  margin: 0;
+}
+
+.seccion-dual__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.seccion-dual__sello {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: var(--color-verde-claro);
+  color: var(--color-verde);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  align-self: flex-start;
+}
+
+
+/* ==========================================================================
+   23. LISTA DE GARANTÍAS / ÍTEMS DE SEGURIDAD
+   ========================================================================== */
+
+.lista-garantias {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.garantia {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.garantia__icono {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-azul-claro);
+  color: var(--color-azul);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.garantia__icono svg {
+  width: 24px;
+  height: 24px;
+}
+
+.garantia__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.garantia__titulo {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-texto);
+}
+
+.garantia__texto {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  line-height: var(--line-height-body);
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   24. MAPA
+   ========================================================================== */
+
+.mapa-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-fondo-alt);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.mapa-wrap iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+  display: block;
+}
+
+.mapa-wrap__pendiente {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  max-width: 400px;
+}
+
+.mapa-wrap__placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-texto-suave);
+}
+
+.mapa-wrap__texto {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-texto-suave);
+}
+
+
+/* ==========================================================================
+   25. DATOS DE CONTACTO EN PÁGINA CONTACTO
+   ========================================================================== */
+
+.contacto-layout {
+  display: grid;
+  gap: var(--space-10);
+}
+
+@media (min-width: 768px) {
+  .contacto-layout {
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+}
+
+.contacto-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.contacto-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.contacto-bloque__titulo {
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-suave);
+}
+
+.contacto-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--font-size-body);
+  color: var(--color-texto);
+}
+
+.contacto-item svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--color-rojo);
+}
+
+.contacto-item a {
+  color: var(--color-texto);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast);
+}
+
+.contacto-item a:hover {
+  color: var(--color-rojo);
+}
+
+/* Botón WhatsApp destacado en contacto */
+.whatsapp-destacado {
+  background-color: var(--color-verde-claro);
+  border: 2px solid var(--color-whatsapp);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.whatsapp-destacado__titulo {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h3);
+  color: var(--color-texto);
+}
+
+.whatsapp-destacado__subtitulo {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   26. UTILIDADES
+   ========================================================================== */
+
+.texto-centrado { text-align: center; }
+.texto-izquierda { text-align: left; }
+
+.mt-4  { margin-top: var(--space-4); }
+.mt-8  { margin-top: var(--space-8); }
+.mt-10 { margin-top: var(--space-10); }
+.mb-4  { margin-bottom: var(--space-4); }
+.mb-8  { margin-bottom: var(--space-8); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Color de marca en texto */
+.color-rojo   { color: var(--color-rojo); }
+.color-azul   { color: var(--color-azul); }
+.color-verde  { color: var(--color-verde); }
+.color-suave  { color: var(--color-texto-suave); }
+
+/* Clases de utilidad para elementos que antes usaban style inline */
+.galeria-figura {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: block;
+}
+
+.horarios-grid {
+  margin-bottom: var(--space-10);
+}
+
+.horario-titulo {
+  font-size: var(--font-size-h4);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-heading);
+}
+
+.daycare-nota {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-caption);
+  color: var(--color-texto-suave);
+}
+
+.encabezado-contacto-titulo {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h3);
+  margin-bottom: var(--space-6);
+}
+
+.encabezado-contacto-subtitulo {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  margin-bottom: var(--space-6);
+}
+
+.btn-formulario-enviar {
+  align-self: flex-start;
+}
+
+.encabezado-pagina--contacto-padding {
+  padding-block: var(--space-16);
+}
+
+.enlace-telefono-cta {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.nota-pendiente-galeria {
+  font-size: var(--font-size-small);
+  color: var(--color-texto-suave);
+  text-align: center;
+  margin-top: var(--space-6);
+}

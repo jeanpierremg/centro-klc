@@ -1,0 +1,275 @@
+/*
+ * tokens.css — Variables de diseño de Centro KLC
+ * Fase 3 · 2026-11-14
+ *
+ * CÓMO USAR ESTE ARCHIVO
+ * ----------------------
+ * Este archivo define todos los colores, tipografías y medidas del sitio.
+ * Si necesita cambiar algo del aspecto del sitio, busque la variable
+ * correspondiente aquí y modifique solo ese valor.
+ *
+ * Por ejemplo: si KLC cambia su color principal, busque "--color-rojo"
+ * y cambie el código hexadecimal. El cambio se aplica en todo el sitio.
+ *
+ * IMPORTANTE: no cambie los nombres de las variables (la parte que empieza
+ * con "--"), solo los valores que están a la derecha de los dos puntos.
+ */
+
+:root {
+
+  /* ==========================================================================
+     COLORES PRINCIPALES DE MARCA
+     Derivados del logo de KLC. No los cambie sin aprobación.
+     ========================================================================== */
+
+  /* Rojo — color principal del sitio (techo del granero y texto del logo) */
+  --color-rojo:          #C0272D;
+  --color-rojo-hover:    #A01E23; /* Versión más oscura para hover de botones */
+
+  /* Azul — confianza e institucionalidad (letra K del logo) */
+  --color-azul:          #1A4A9B;
+  --color-azul-claro:    #EEF3FB; /* Fondo muy pálido para tarjetas azules */
+
+  /* Naranja — energía y dinamismo (letra L del logo) */
+  /* ATENCIÓN: el naranja original del logo (#F7941D) no es suficientemente
+     oscuro para usarse en texto sobre fondo blanco.
+     Use --color-naranja-texto para texto, y --color-naranja solo para íconos. */
+  --color-naranja:       #E8820C; /* Para íconos y texto grande (≥18px) */
+  --color-naranja-texto: #B5620A; /* Para texto de cuerpo sobre fondo blanco */
+
+  /* Verde — naturaleza, salud, granja (letra C del logo) */
+  --color-verde:         #2A8A36;
+  --color-verde-claro:   #EDF7EE; /* Fondo muy pálido para tarjetas verdes */
+
+  /* Amarillo — nivel Pre-Kinder (Yellow Farmers) */
+  --color-amarillo:       #D4A010;
+  --color-amarillo-fondo: #FDF8E6;
+
+  /* Violeta — nivel Preparatoria (Purple Farmers) */
+  --color-violeta:        #6B3FA0;
+  --color-violeta-claro:  #F3EEFB;
+
+  /* Verde WhatsApp — SOLO para el botón de WhatsApp, no reutilizar */
+  --color-whatsapp:       #25D366;
+  --color-whatsapp-hover: #1EA853;
+
+
+  /* ==========================================================================
+     COLORES DE LOS GRUPOS FARMERS
+     Cada nivel tiene su color de acento y su color de fondo de tarjeta.
+     ========================================================================== */
+
+  /* Sala Cuna — Baby Farmers (melocotón suave, evoca cuidado de bebés) */
+  --color-farmer-baby:        #F4A580;
+  --color-farmer-baby-fondo:  #FEF5F0;
+
+  /* Pre-Maternal — Red Farmers */
+  --color-farmer-red:         #C0272D; /* Mismo que --color-rojo */
+  --color-farmer-red-fondo:   #FEF0F0;
+
+  /* Maternal — Blue Farmers */
+  --color-farmer-blue:        #1A4A9B; /* Mismo que --color-azul */
+  --color-farmer-blue-fondo:  #EEF3FB;
+
+  /* Pre-Kinder — Yellow Farmers */
+  --color-farmer-yellow:        #D4A010;
+  --color-farmer-yellow-fondo:  #FDF8E6;
+
+  /* Kinder — Green Farmers */
+  --color-farmer-green:        #2A8A36; /* Mismo que --color-verde */
+  --color-farmer-green-fondo:  #EDF7EE;
+
+  /* Preparatoria — Purple Farmers */
+  --color-farmer-purple:        #6B3FA0;
+  --color-farmer-purple-fondo:  #F3EEFB;
+
+
+  /* ==========================================================================
+     FONDOS Y NEUTROS
+     ========================================================================== */
+
+  /* Fondo principal del sitio — crema suave, más cálido que el blanco puro */
+  /* Si prefiere fondo blanco puro, cambie este valor a: #FFFFFF */
+  --color-fondo:      #FDFAF6;
+
+  /* Fondo de secciones alternadas — un tono más oscuro para diferenciar bandas */
+  --color-fondo-alt:  #F3EEE6;
+
+  /* Blanco puro — para tarjetas, header, modal */
+  --color-blanco:     #FFFFFF;
+
+  /* Texto principal — gris carbón (evita el negro puro para mayor calidez) */
+  --color-texto:        #1E1E1E;
+
+  /* Texto secundario — metadatos, fechas, pies de tarjeta */
+  --color-texto-suave:  #5A5A5A;
+
+  /* Bordes — separadores y marcos de tarjetas */
+  --color-borde:        #E0D9CE;
+
+
+  /* ==========================================================================
+     TIPOGRAFÍA
+     Nunito para títulos y botones | Inter para cuerpo y formularios.
+     Ambas se cargan desde Google Fonts en cada HTML:
+       <link href="https://fonts.googleapis.com/css2?
+         family=Nunito:wght@600;700;800&
+         family=Inter:wght@400;500;600&
+         display=swap" rel="stylesheet">
+     ========================================================================== */
+
+  --font-heading: 'Nunito', sans-serif;  /* Títulos, botones, lema */
+  --font-body:    'Inter', sans-serif;   /* Cuerpo, formularios, tablas */
+
+
+  /* ==========================================================================
+     ESCALA TIPOGRÁFICA
+     Los tamaños en "rem" son relativos al tamaño base del navegador (16px).
+     1rem = 16px | 1.5rem = 24px | 2rem = 32px
+     ========================================================================== */
+
+  /* Tamaños para móvil (base, mobile-first) */
+  --font-size-hero:    2.25rem;    /* 36px — título del hero en inicio */
+  --font-size-h1:      2rem;       /* 32px — encabezado de página */
+  --font-size-h2:      1.625rem;   /* 26px — secciones principales */
+  --font-size-h3:      1.25rem;    /* 20px — subtítulos de sección */
+  --font-size-h4:      1.125rem;   /* 18px — títulos de tarjeta */
+  --font-size-body:    1rem;       /* 16px — cuerpo de texto */
+  --font-size-label:   0.9375rem;  /* 15px — etiquetas de formulario, navegación */
+  --font-size-small:   0.875rem;   /* 14px — metadatos, fechas */
+  --font-size-caption: 0.75rem;    /* 12px — pies de foto, notas */
+  --font-size-btn:     1rem;       /* 16px — texto de botones */
+
+  /* Pesos tipográficos */
+  --font-weight-regular:    400;
+  --font-weight-medium:     500;
+  --font-weight-semibold:   600;
+  --font-weight-bold:       700;
+  --font-weight-extrabold:  800;
+
+  /* Altura de línea */
+  --line-height-tight:   1.15;  /* Títulos grandes, una sola línea */
+  --line-height-heading: 1.25;  /* Encabezados de sección */
+  --line-height-body:    1.65;  /* Cuerpo de texto — espacioso para lectura cómoda */
+  --line-height-compact: 1.4;   /* Etiquetas, navegación */
+
+
+  /* ==========================================================================
+     ESPACIADO
+     Base: 4px. Todos los espacios son múltiplos de 4.
+     Úselos siempre en lugar de valores específicos como "15px" o "22px".
+     ========================================================================== */
+
+  --space-1:  4px;    /* Mínimo — entre ícono e texto en la misma línea */
+  --space-2:  8px;    /* Padding de chips y badges pequeños */
+  --space-3:  12px;   /* Gaps entre elementos en fila */
+  --space-4:  16px;   /* Padding de botones (vertical), gaps de contenido */
+  --space-5:  20px;   /* Separación entre párrafos */
+  --space-6:  24px;   /* Padding interno de tarjetas en móvil */
+  --space-8:  32px;   /* Espacio entre componentes dentro de una sección */
+  --space-10: 40px;   /* Separación entre secciones en móvil */
+  --space-12: 48px;   /* Padding horizontal del contenedor en tablet */
+  --space-16: 64px;   /* Separación entre secciones en escritorio */
+  --space-20: 80px;   /* Padding vertical de secciones principales (escritorio) */
+  --space-24: 96px;   /* Margen superior de páginas internas */
+  --space-32: 128px;  /* Solo para el hero — espacio generoso antes del CTA */
+
+
+  /* ==========================================================================
+     GRID Y CONTENEDOR
+     ========================================================================== */
+
+  /* Ancho máximo del contenido (el sitio nunca se ve más ancho que esto) */
+  --max-width-container: 1200px;
+
+  /* Gap entre columnas de tarjetas */
+  --gap-grid:        24px;
+  --gap-grid-lg:     32px; /* En escritorio */
+
+
+  /* ==========================================================================
+     BREAKPOINTS
+     Para usar en @media queries en otros archivos CSS.
+     Ejemplo: @media (min-width: var(--bp-tablet)) { ... }
+     ATENCIÓN: las variables CSS no funcionan dentro de @media directamente.
+     Use los valores numéricos en @media: 768px, no var(--bp-tablet).
+     Estos tokens son para documentación y referencia.
+     ========================================================================== */
+
+  --bp-mobile:  360px;   /* Base — diseño de una columna */
+  --bp-tablet:  768px;   /* Dos columnas, header con navegación completa */
+  --bp-desktop: 1280px;  /* Tres o cuatro columnas, contenedor a su ancho máximo */
+
+
+  /* ==========================================================================
+     RADIOS DE BORDE (border-radius)
+     Esquinas redondeadas — más grandes = más amigable y menos corporativo.
+     ========================================================================== */
+
+  --radius-sm:   6px;      /* Chips, badges, inputs */
+  --radius-md:   12px;     /* Botones, tarjetas pequeñas */
+  --radius-lg:   20px;     /* Tarjetas principales, Farmer Cards */
+  --radius-xl:   32px;     /* Secciones hero, modales */
+  --radius-full: 9999px;   /* Círculos — botón WhatsApp, avatares, pills */
+
+
+  /* ==========================================================================
+     SOMBRAS
+     De menor a mayor elevación visual.
+     ========================================================================== */
+
+  /* Sombra suave — tarjetas en reposo, inputs */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* Sombra media — tarjetas al hover, header sticky */
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* Sombra grande — menú móvil desplegado, modales */
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+
+  /* Sombra del botón flotante de WhatsApp — tinte verde característico */
+  --shadow-whatsapp: 0 4px 16px rgba(37, 211, 102, 0.35);
+
+
+  /* ==========================================================================
+     TRANSICIONES
+     Velocidades estándar para animaciones de interfaz.
+     ========================================================================== */
+
+  --transition-fast:   150ms ease;   /* Hover de botones, cambio de color */
+  --transition-normal: 200ms ease;   /* Hover de tarjetas, apertura de menú */
+  --transition-slow:   300ms ease;   /* Entrada de secciones, animaciones */
+
+
+  /* ==========================================================================
+     Z-INDEX
+     Capas de apilamiento para elementos flotantes y superpuestos.
+     ========================================================================== */
+
+  --z-base:       1;      /* Contenido normal */
+  --z-raised:     10;     /* Tarjetas al hover */
+  --z-header:     50;     /* Header sticky */
+  --z-overlay:    80;     /* Overlay oscuro del menú móvil */
+  --z-drawer:     90;     /* Menú drawer en móvil */
+  --z-whatsapp:   100;    /* Botón flotante WhatsApp — siempre encima de todo */
+
+}
+
+
+/* ==========================================================================
+   TIPOGRAFÍA RESPONSIVE
+   En escritorio, algunos tamaños de fuente aumentan.
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  :root {
+    --font-size-hero: 3.25rem;    /* 52px en escritorio */
+    --font-size-h1:   2.75rem;    /* 44px en escritorio */
+    --font-size-h2:   2rem;       /* 32px en escritorio */
+    --font-size-h3:   1.5rem;     /* 24px en escritorio */
+    --font-size-h4:   1.25rem;    /* 20px en escritorio */
+    --font-size-body: 1.0625rem;  /* 17px en escritorio — ligeramente más grande */
+
+    --gap-grid: 32px; /* Gap más generoso en tablet y escritorio */
+  }
+}
