@@ -1777,6 +1777,20 @@ tbody td {
   gap: var(--space-5);
 }
 
+/* Variante 2×2 (4 ítems): 1 columna en móvil, 2 columnas desde tablet */
+.lista-garantias--2x2 {
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .lista-garantias--2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8) var(--space-8);
+  }
+}
+
 .garantia {
   display: flex;
   gap: var(--space-5);
@@ -2125,4 +2139,14 @@ tbody td {
   font-size: var(--font-size-small);
   font-family: var(--font-cuerpo);
   letter-spacing: 0.05em;
+}
+
+/* Compensa el encabezado fijo al saltar a un ancla (#sala-cuna, #seguimiento, etc.) */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Evita que tablas anchas desborden la grilla en móvil */
+.seccion-dual > * {
+  min-width: 0;
 }
