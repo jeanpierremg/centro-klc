@@ -50,8 +50,17 @@
   --color-violeta-claro:  #F3EEFB;
 
   /* Verde WhatsApp — SOLO para el botón de WhatsApp, no reutilizar */
-  --color-whatsapp:       #25D366;
+  --color-whatsapp:       #25D366; /* Decorativo (bordes, íconos grandes). NO usar como fondo con texto blanco */
   --color-whatsapp-hover: #1EA853;
+
+  /* Verde WhatsApp ACCESIBLE — fondo de los botones con texto/ícono blanco
+     (contraste 5,08:1 con blanco; el #25D366 solo daba 1,98:1). Añadido 2026-11-24 */
+  --color-whatsapp-accesible:       #1A7F37;
+  --color-whatsapp-accesible-hover: #146C2E;
+
+  /* Verde de TEXTO — para texto sobre --color-verde-claro (sello MEP, mensaje de éxito).
+     Contraste 5,99:1 sobre #EDF7EE. Añadido 2026-11-24 */
+  --color-verde-texto:   #1F6B2A;
 
 
   /* ==========================================================================
@@ -82,6 +91,21 @@
   /* Preparatoria — Purple Farmers */
   --color-farmer-purple:        #6B3FA0;
   --color-farmer-purple-fondo:  #F3EEFB;
+
+
+  /* ------------------------------------------------------------------
+     COLORES DE TEXTO DE LOS FARMERS (añadidos 2026-11-24, accesibilidad)
+     Los colores de arriba son DECORATIVOS (fondos, bordes, puntos de color):
+     el melocotón y el amarillo son demasiado claros para escribir texto con
+     ellos. Para texto (badges, botones de nivel) se usan estas versiones más
+     oscuras, que cumplen WCAG AA (≥ 4,5:1) sobre el fondo de cada Farmer.
+     ------------------------------------------------------------------ */
+  --color-farmer-baby-texto:    #A6481C; /* 5,48:1 sobre #FEF5F0 */
+  --color-farmer-red-texto:     #C0272D; /* 5,31:1 sobre #FEF0F0 (igual que el decorativo) */
+  --color-farmer-blue-texto:    #1A4A9B; /* 7,55:1 sobre #EEF3FB (igual que el decorativo) */
+  --color-farmer-yellow-texto:  #7A5700; /* 6,19:1 sobre #FDF8E6 */
+  --color-farmer-green-texto:   #1F6B2A; /* 5,99:1 sobre #EDF7EE */
+  --color-farmer-purple-texto:  #6B3FA0; /* 6,48:1 sobre #F3EEFB (igual que el decorativo) */
 
 
   /* ==========================================================================
@@ -197,7 +221,7 @@
      ========================================================================== */
 
   --bp-mobile:  360px;   /* Base — diseño de una columna */
-  --bp-tablet:  768px;   /* Dos columnas, header con navegación completa */
+  --bp-tablet:  768px;   /* Dos columnas (el header mantiene el menú hamburguesa hasta 1024px) */
   --bp-desktop: 1280px;  /* Tres o cuatro columnas, contenedor a su ancho máximo */
 
 
@@ -251,7 +275,7 @@
   --z-header:     50;     /* Header sticky */
   --z-overlay:    80;     /* Overlay oscuro del menú móvil */
   --z-drawer:     90;     /* Menú drawer en móvil */
-  --z-whatsapp:   100;    /* Botón flotante WhatsApp — siempre encima de todo */
+  --z-whatsapp:   60;     /* Botón flotante WhatsApp — sobre el contenido y el header, pero POR DEBAJO del menú móvil (overlay 80, drawer 90) */
 
 }
 

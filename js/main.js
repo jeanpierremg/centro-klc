@@ -7,6 +7,7 @@
  * 2. Menú hamburguesa / drawer móvil
  * 3. Marcar ítem activo en la navegación
  * 4. Envío del formulario de contacto (Formspree)
+ * 5. Trampa de foco para ventanas modales (menú móvil y galería de "El centro")
  */
 
 (function () {
@@ -32,12 +33,64 @@
 
 
   /* ------------------------------------------------------------------
+     TRAMPA DE FOCO (usada por el menú móvil y por la galería de El centro)
+     - Mientras una ventana modal está abierta, el resto de la página queda
+       "inert" (no recibe foco ni clics para lectores de pantalla/teclado).
+     - Tab y Shift+Tab giran dentro de la ventana, sin salir de ella.
+     Se expone como window.KLC.atraparFoco(ventana) → devuelve una función
+     "liberar()" que quita la trampa y devuelve el foco a quien abrió la ventana.
+  ------------------------------------------------------------------ */
+  const SELECTOR_FOCO = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  const elementosEnfocables = (ventana) =>
+    Array.from(ventana.querySelectorAll(SELECTOR_FOCO)).filter((el) => el.getClientRects().length > 0);
+
+  // Partes de la página que se desactivan mientras hay una ventana abierta
+  const fondoDePagina = (ventana) =>
+    Array.from(document.body.children).filter((el) =>
+      el !== ventana && !ventana.contains(el) &&
+      !el.matches('script, .nav-overlay, .saltar-contenido') && !el.contains(ventana));
+
+  window.KLC = window.KLC || {};
+  window.KLC.atraparFoco = (ventana, disparador) => {
+    const desactivados = fondoDePagina(ventana).filter((el) => !el.hasAttribute('inert'));
+    desactivados.forEach((el) => el.setAttribute('inert', ''));
+    document.body.classList.add('dialogo-abierto');
+
+    const alTeclear = (e) => {
+      if (e.key !== 'Tab') return;
+      const lista = elementosEnfocables(ventana);
+      if (!lista.length) { e.preventDefault(); return; }
+      const primero = lista[0];
+      const ultimo  = lista[lista.length - 1];
+      if (!ventana.contains(document.activeElement)) {
+        e.preventDefault(); primero.focus();
+      } else if (e.shiftKey && document.activeElement === primero) {
+        e.preventDefault(); ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault(); primero.focus();
+      }
+    };
+    document.addEventListener('keydown', alTeclear);
+
+    return function liberar() {
+      document.removeEventListener('keydown', alTeclear);
+      desactivados.forEach((el) => el.removeAttribute('inert'));
+      document.body.classList.remove('dialogo-abierto');
+      if (disparador && disparador.focus) disparador.focus(); // devuelve el foco
+    };
+  };
+
+
+  /* ------------------------------------------------------------------
      2. MENÚ HAMBURGUESA / DRAWER MÓVIL
   ------------------------------------------------------------------ */
   const hamburguesa = document.querySelector('.header__hamburguesa');
   const drawer      = document.querySelector('.nav-drawer');
   const overlay     = document.querySelector('.nav-overlay');
   const cerrarDrawer = document.querySelector('.nav-drawer__cerrar');
+
+  let liberarFoco = null;
 
   const abrirMenu = () => {
     if (!drawer || !overlay || !hamburguesa) return;
@@ -47,6 +100,8 @@
     overlay.classList.add('activo');
     hamburguesa.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden'; // evita scroll del fondo
+    document.body.classList.add('menu-abierto'); // oculta el botón flotante de WhatsApp
+    liberarFoco = window.KLC.atraparFoco(drawer, hamburguesa);
     // Foco al primer elemento del drawer
     const primerEnlace = drawer.querySelector('a, button');
     if (primerEnlace) primerEnlace.focus();
@@ -60,7 +115,9 @@
     overlay.classList.remove('activo');
     hamburguesa.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    hamburguesa.focus(); // devuelve el foco al botón
+    document.body.classList.remove('menu-abierto');
+    if (liberarFoco) { liberarFoco(); liberarFoco = null; } // quita la trampa y devuelve el foco al botón
+    else hamburguesa.focus();
   };
 
   // Estado inicial: drawer cerrado
@@ -98,6 +155,7 @@
     const mensajeOk    = formulario.querySelector('.formulario__mensaje--ok');
     const mensajeError = formulario.querySelector('.formulario__mensaje--error');
     const botonEnviar  = formulario.querySelector('[type="submit"]');
+    // Los mensajes viven ocultos con el atributo "hidden" y se muestran quitándolo
 
     /* Mensajes de validación en español */
     const mensajesValidacion = {
@@ -143,9 +201,10 @@
       campo.addEventListener('input', () => limpiarErrorCampo(campo));
     });
 
-    /* Validar al enviar */
+    /* Validar al enviar (y mover el foco al primer campo con error) */
     const validarFormulario = () => {
       let valido = true;
+      let primerInvalido = null;
       ['nombre', 'correo', 'edad_hijo', 'mensaje'].forEach((nombre) => {
         const campo = formulario.querySelector(`[name="${nombre}"]`);
         if (!campo) return;
@@ -154,8 +213,10 @@
         if (vacio || correoInvalido) {
           mostrarErrorCampo(campo, mensajesValidacion[nombre]);
           valido = false;
+          if (!primerInvalido) primerInvalido = campo;
         }
       });
+      if (primerInvalido) primerInvalido.focus();
       return valido;
     };
 
@@ -164,8 +225,8 @@
 
       if (!validarFormulario()) return;
 
-      if (mensajeOk)    mensajeOk.style.display    = 'none';
-      if (mensajeError) mensajeError.style.display  = 'none';
+      if (mensajeOk)    mensajeOk.hidden    = true;
+      if (mensajeError) mensajeError.hidden = true;
 
       if (botonEnviar) {
         botonEnviar.disabled = true;
@@ -184,14 +245,16 @@
 
         if (respuesta.ok) {
           formulario.reset();
-          if (mensajeOk) mensajeOk.style.display = 'block';
-          // Desplazar al mensaje
-          mensajeOk.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          if (mensajeOk) {
+            mensajeOk.hidden = false;
+            // Desplazar al mensaje
+            mensajeOk.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
         } else {
-          if (mensajeError) mensajeError.style.display = 'block';
+          if (mensajeError) mensajeError.hidden = false;
         }
       } catch (_err) {
-        if (mensajeError) mensajeError.style.display = 'block';
+        if (mensajeError) mensajeError.hidden = false;
       } finally {
         if (botonEnviar) {
           botonEnviar.disabled = false;

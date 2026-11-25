@@ -18,6 +18,20 @@
   <meta property="og:type"        content="website" />
   <meta property="og:locale"      content="es_CR" />
   <meta property="og:site_name"   content="Centro KLC" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Programas bilingües — Centro KLC Heredia" />
+  <meta name="twitter:description" content="6 niveles desde los 3 meses hasta Preparatoria. Programa bilingüe desde Pre-Maternal, currículo MEP y Day Care desde las 7 am. La Ribera de Belén, Heredia." />
+  <meta name="twitter:image"       content="https://www.centroklc.com/assets/og/og-programas.jpg" />
+  <meta name="twitter:image:alt"   content="Niños de Centro KLC en sus programas bilingües por nivel" />
+
+  <!-- Íconos (rutas relativas: funcionan en cualquier subcarpeta) -->
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,8 +39,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/tokens.css" />
-  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/tokens.css?v=20261124" />
+  <link rel="stylesheet" href="css/main.css?v=20261124" />
 
   <!-- Schema.org: EducationalOrganization (global) -->
   <script type="application/ld+json">
@@ -156,7 +170,7 @@
         <a class="header__logo" href="index.html" aria-label="Centro KLC — Inicio">
           <img src="img/logo-klc-transparente.png"
                alt="Logo de Centro KLC"
-               width="160" height="48" />
+               width="320" height="274" />
         </a>
         <nav class="header__nav" aria-label="Navegación principal">
           <a href="index.html">Inicio</a>
@@ -210,7 +224,7 @@
         <img class="encabezado-pagina__imagen"
              src="img/ninos-jugando.jpg"
              alt="Niños de distintos niveles en Centro KLC, preescolar bilingüe en La Ribera de Belén, Heredia"
-             width="1440" height="480"
+             width="1029" height="687"
              fetchpriority="high"
              loading="eager" />
       </picture>
@@ -293,10 +307,13 @@
       <div class="contenedor">
         <article class="farmer-card farmer--red farmer-card--invertida">
           <div class="farmer-card__imagen-wrap">
-            <img src="img/ninos-jugando.jpg"
+            <picture>
+              <source srcset="img/ninos-jugando.webp" type="image/webp">
+              <img src="img/ninos-jugando.jpg"
                  alt="Niños del nivel Pre-Maternal (Red Farmers) jugando en Centro KLC"
-                 width="600" height="450"
+                 width="1029" height="687"
                  loading="lazy" />
+            </picture>
           </div>
           <div class="farmer-card__contenido farmer--red">
             <span class="farmer-card__badge">Red Farmers</span>
@@ -427,10 +444,13 @@
       <div class="contenedor">
         <article class="farmer-card farmer--green">
           <div class="farmer-card__imagen-wrap">
-            <img src="img/centro-exterior-dia.jpg"
+            <picture>
+              <source srcset="img/centro-exterior-dia.webp" type="image/webp">
+              <img src="img/centro-exterior-dia.jpg"
                  alt="Niños del nivel Kinder (Green Farmers) en actividades en Centro KLC"
-                 width="600" height="450"
+                 width="960" height="716"
                  loading="lazy" />
+            </picture>
           </div>
           <div class="farmer-card__contenido farmer--green">
             <span class="farmer-card__badge">Green Farmers</span>
@@ -534,16 +554,19 @@
 
         <div class="seccion-dual">
           <div class="seccion-dual__imagen">
-            <img src="img/patio-juegos.jpg"
+            <picture>
+              <source srcset="img/patio-juegos.webp" type="image/webp">
+              <img src="img/patio-juegos.jpg"
                  alt="Niños en actividades de Day Care en el patio de Centro KLC"
-                 width="600" height="450"
+                 width="1200" height="800"
                  loading="lazy" />
+            </picture>
           </div>
           <div class="seccion-dual__contenido">
             <p>Sabemos que los horarios laborales no siempre coinciden con los horarios escolares. Por eso ofrecemos Day Care con tres opciones de salida para adaptarse a tu jornada.</p>
             <p>Tu hijo no "espera" en el Day Care — continúa aprendiendo con actividades dirigidas, juego libre y tiempo al aire libre. Siempre con el mismo nivel de atención y cuidado que en las horas de clase.</p>
 
-            <div class="tabla-wrap mt-8">
+            <div class="tabla-wrap tabla-wrap--ancha mt-8" role="region" aria-label="Modalidades de Day Care (desliza para ver toda la tabla)" tabindex="0">
               <table>
                 <caption class="sr-only">Modalidades de Day Care en Centro KLC</caption>
                 <thead>
@@ -606,7 +629,7 @@
     <div class="contenedor">
       <div class="footer__grid">
         <div class="footer__marca">
-          <img class="footer__logo" src="img/logo-klc-transparente.png" alt="Logo Centro KLC" width="140" height="56" loading="lazy" />
+          <img class="footer__logo" src="img/logo-klc-transparente.png" alt="Logo Centro KLC" width="320" height="274" loading="lazy" />
           <p class="footer__lema">Teaching with Love</p>
         </div>
         <nav aria-label="Navegación del pie de página">
@@ -664,6 +687,6 @@
     <span class="whatsapp-flotante__texto">Escríbenos</span>
   </a>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=20261124"></script>
 </body>
 </html>

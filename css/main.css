@@ -195,7 +195,7 @@ strong {
   top: 0;
   z-index: var(--z-header);
   background-color: var(--color-blanco);
-  height: 60px;
+  height: 68px;
   display: flex;
   align-items: center;
   transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
@@ -222,7 +222,7 @@ strong {
 }
 
 .header__logo img {
-  height: 36px;
+  height: 52px;   /* ≈ 61 px de ancho: el eslogan del logo se lee en móvil */
   width: auto;
 }
 
@@ -365,16 +365,20 @@ strong {
   justify-content: center;
 }
 
-/* Escritorio: mostrar nav, ocultar hamburguesa */
+/* Tablet: header un poco más alto (la hamburguesa se mantiene hasta 1024px) */
 @media (min-width: 768px) {
   .header {
-    height: 72px;
+    height: 76px;
   }
 
   .header__logo img {
-    height: 48px;
+    height: 58px;
   }
+}
 
+/* Escritorio (≥ 1024px): mostrar nav, ocultar hamburguesa.
+   Antes el menú aparecía desde 768px y "Por qué KLC" / "El centro" se partían en 2 líneas. */
+@media (min-width: 1024px) {
   .header__hamburguesa {
     display: none;
   }
@@ -395,6 +399,7 @@ strong {
     text-decoration: none;
     padding-bottom: 2px;
     border-bottom: 2px solid transparent;
+    white-space: nowrap;
     transition: color var(--transition-fast), border-color var(--transition-fast);
   }
 
@@ -419,7 +424,8 @@ strong {
   background-color: var(--color-fondo-alt);
   border-top: 3px solid var(--color-borde);
   padding-top: var(--space-16);
-  padding-bottom: var(--space-8);
+  /* 96 px en todos los anchos: deja espacio para que el botón flotante de WhatsApp (siempre visible) no tape el final de la página */
+  padding-bottom: var(--space-24);
   margin-top: auto;
 }
 
@@ -528,13 +534,13 @@ strong {
 
 .whatsapp-flotante {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 16px;
+  right: 16px;
   z-index: var(--z-whatsapp);
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  background-color: var(--color-whatsapp);
+  background-color: var(--color-whatsapp-accesible);
   color: #fff;
   text-decoration: none;
   border-radius: var(--radius-full);
@@ -548,9 +554,16 @@ strong {
 }
 
 .whatsapp-flotante:hover {
-  background-color: var(--color-whatsapp-hover);
+  background-color: var(--color-whatsapp-accesible-hover);
   transform: scale(1.05);
   color: #fff;
+}
+
+/* Con el menú móvil o la galería abiertos, el botón flotante se oculta
+   (la clase la pone js/main.js en <body>) */
+body.menu-abierto .whatsapp-flotante,
+body.dialogo-abierto .whatsapp-flotante {
+  display: none;
 }
 
 .whatsapp-flotante:focus-visible {
@@ -598,6 +611,8 @@ strong {
 /* Escritorio: mostrar texto en hover con expansión */
 @media (min-width: 768px) {
   .whatsapp-flotante {
+    bottom: 24px;
+    right: 24px;
     animation: none;
     padding-inline: var(--space-4);
     width: 60px;
@@ -690,9 +705,9 @@ strong {
 
 /* Botón WhatsApp */
 .btn--whatsapp {
-  background-color: var(--color-whatsapp);
+  background-color: var(--color-whatsapp-accesible);
   color: #fff;
-  border-color: var(--color-whatsapp);
+  border-color: var(--color-whatsapp-accesible);
   box-shadow: var(--shadow-sm);
   font-size: 1.125rem;
   padding: 18px 36px;
@@ -701,8 +716,8 @@ strong {
 }
 
 .btn--whatsapp:hover {
-  background-color: var(--color-whatsapp-hover);
-  border-color: var(--color-whatsapp-hover);
+  background-color: var(--color-whatsapp-accesible-hover);
+  border-color: var(--color-whatsapp-accesible-hover);
   color: #fff;
   box-shadow: var(--shadow-md);
 }
@@ -752,7 +767,7 @@ strong {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.25) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.68) 55%, rgba(0, 0, 0, 0.58) 100%);
   pointer-events: none;
 }
 
@@ -791,7 +806,7 @@ strong {
 
 .hero__sin-compromiso {
   font-size: var(--font-size-small);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 @media (min-width: 768px) {
@@ -826,7 +841,7 @@ strong {
   content: '';
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0, 0, 0, 0.55);
   pointer-events: none;
 }
 
@@ -1164,7 +1179,7 @@ strong {
   padding: 4px 12px;
   border-radius: var(--radius-full);
   background-color: var(--farmer-fondo, var(--color-fondo-alt));
-  color: var(--farmer-color, var(--color-texto-suave));
+  color: var(--farmer-texto, var(--color-texto-suave));
   align-self: flex-start;
 }
 
@@ -1250,12 +1265,13 @@ strong {
 }
 
 /* Variables por nivel — se aplican directamente en el HTML */
-.farmer--baby   { --farmer-color: var(--color-farmer-baby);   --farmer-fondo: var(--color-farmer-baby-fondo);   }
-.farmer--red    { --farmer-color: var(--color-farmer-red);    --farmer-fondo: var(--color-farmer-red-fondo);    }
-.farmer--blue   { --farmer-color: var(--color-farmer-blue);   --farmer-fondo: var(--color-farmer-blue-fondo);   }
-.farmer--yellow { --farmer-color: var(--color-farmer-yellow); --farmer-fondo: var(--color-farmer-yellow-fondo); }
-.farmer--green  { --farmer-color: var(--color-farmer-green);  --farmer-fondo: var(--color-farmer-green-fondo);  }
-.farmer--purple { --farmer-color: var(--color-farmer-purple); --farmer-fondo: var(--color-farmer-purple-fondo); }
+.farmer--baby   { --farmer-color: var(--color-farmer-baby);   --farmer-fondo: var(--color-farmer-baby-fondo);   --farmer-texto: var(--color-farmer-baby-texto);   }
+.farmer--red    { --farmer-color: var(--color-farmer-red);    --farmer-fondo: var(--color-farmer-red-fondo);    --farmer-texto: var(--color-farmer-red-texto);    }
+.farmer--blue   { --farmer-color: var(--color-farmer-blue);   --farmer-fondo: var(--color-farmer-blue-fondo);   --farmer-texto: var(--color-farmer-blue-texto);   }
+.farmer--yellow { --farmer-color: var(--color-farmer-yellow); --farmer-fondo: var(--color-farmer-yellow-fondo); --farmer-texto: var(--color-farmer-yellow-texto); }
+.farmer--green  { --farmer-color: var(--color-farmer-green);  --farmer-fondo: var(--color-farmer-green-fondo);  --farmer-texto: var(--color-farmer-green-texto);  }
+.farmer--purple { --farmer-color: var(--color-farmer-purple); --farmer-fondo: var(--color-farmer-purple-fondo); --farmer-texto: var(--color-farmer-purple-texto); }
+/* --farmer-color = decorativo (fondos, bordes). --farmer-texto = versión oscura para escribir texto (WCAG AA). */
 
 
 /* ==========================================================================
@@ -1286,7 +1302,7 @@ strong {
   padding: 4px 12px;
   border-radius: var(--radius-full);
   background-color: var(--farmer-fondo, var(--color-fondo-alt));
-  color: var(--farmer-color, var(--color-texto-suave));
+  color: var(--farmer-texto, var(--color-texto-suave));
   align-self: flex-start;
 }
 
@@ -1397,13 +1413,13 @@ strong {
   font-family: var(--font-body);
   text-decoration: none;
   border: 2px solid var(--farmer-color, var(--color-borde));
-  color: var(--farmer-color, var(--color-texto-suave));
+  color: var(--farmer-texto, var(--color-texto-suave));
   background-color: var(--farmer-fondo, transparent);
   transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .selector-nivel__boton:hover {
-  background-color: var(--farmer-color, var(--color-borde));
+  background-color: var(--farmer-texto, var(--color-texto-suave));
   color: #fff;
   box-shadow: var(--shadow-sm);
 }
@@ -1411,13 +1427,23 @@ strong {
 .selector-nivel__boton:focus-visible {
   outline: 3px solid var(--color-azul);
   outline-offset: 2px;
-  color: var(--farmer-color, var(--color-texto-suave));
+  color: var(--farmer-texto, var(--color-texto-suave));
 }
 
 
 /* ==========================================================================
    18. TABLA DE HORARIOS Y PROGRESIÓN
    ========================================================================== */
+
+.tabla-wrap:focus-visible {
+  outline: 3px solid var(--color-azul);
+  outline-offset: 2px;
+}
+
+/* Tabla con columnas de texto largo (Day Care): en móvil se desliza en horizontal en vez de apretarse */
+.tabla-wrap--ancha table {
+  min-width: 560px;
+}
 
 .tabla-wrap {
   overflow-x: auto;
@@ -1574,7 +1600,7 @@ tbody td {
 }
 
 /* Grid de 2 columnas en tablet */
-@media (min-width: 768px) {
+@media (min-width: 1280px) {   /* 1 columna hasta 1280px: en la columna del formulario, a 768-1024px los campos quedaban demasiado estrechos */
   .formulario__fila {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1587,19 +1613,21 @@ tbody td {
   padding: var(--space-5);
   border-radius: var(--radius-md);
   font-size: var(--font-size-small);
+}
+
+/* Los mensajes empiezan ocultos con el atributo HTML "hidden"; js/main.js lo quita al enviar. */
+.formulario__mensaje[hidden] {
   display: none;
 }
 
 .formulario__mensaje--ok {
   background-color: var(--color-verde-claro);
-  color: var(--color-verde);
-  display: block;
+  color: var(--color-verde-texto);
 }
 
 .formulario__mensaje--error {
   background-color: var(--color-farmer-red-fondo);
   color: var(--color-rojo);
-  display: block;
 }
 
 
@@ -1645,7 +1673,7 @@ tbody td {
 .banda-cta__pie {
   margin-top: var(--space-5);
   font-size: var(--font-size-small);
-  color: rgba(255, 255, 255, 0.8);
+  color: #fff;
 }
 
 
@@ -1758,7 +1786,7 @@ tbody td {
   align-items: center;
   gap: var(--space-2);
   background-color: var(--color-verde-claro);
-  color: var(--color-verde);
+  color: var(--color-verde-texto);
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
   font-size: var(--font-size-small);
@@ -2002,7 +2030,7 @@ tbody td {
 /* Color de marca en texto */
 .color-rojo   { color: var(--color-rojo); }
 .color-azul   { color: var(--color-azul); }
-.color-verde  { color: var(--color-verde); }
+.color-verde  { color: var(--color-verde-texto); }
 .color-suave  { color: var(--color-texto-suave); }
 
 /* Clases de utilidad para elementos que antes usaban style inline */
@@ -2125,7 +2153,8 @@ tbody td {
 }
 
 .lightbox__nav:hover,
-.lightbox__nav:focus { opacity: 1; background: rgba(255, 255, 255, 0.25); outline: none; }
+.lightbox__nav:focus { opacity: 1; background: rgba(255, 255, 255, 0.25); }
+.lightbox__nav:focus-visible { outline: 2px solid white; outline-offset: 2px; }
 
 .lightbox__nav--anterior { left: 16px; }
 .lightbox__nav--siguiente { right: 16px; }
@@ -2135,15 +2164,15 @@ tbody td {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.85);
   font-size: var(--font-size-small);
-  font-family: var(--font-cuerpo);
+  font-family: var(--font-body);
   letter-spacing: 0.05em;
 }
 
 /* Compensa el encabezado fijo al saltar a un ancla (#sala-cuna, #seguimiento, etc.) */
 section[id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 6rem;
 }
 
 /* Evita que tablas anchas desborden la grilla en móvil */
